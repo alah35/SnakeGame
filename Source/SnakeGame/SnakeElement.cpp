@@ -1,26 +1,26 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Snake.h"
 #include "SnakeElement.h"
+#include "Engine/Classes/Components/StaticMeshComponent.h"
 
 // Sets default values
-ASnake::ASnake()
+ASnakeElement::ASnakeElement()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 }
 
 // Called when the game starts or when spawned
-void ASnake::BeginPlay()
+void ASnakeElement::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorld()->SpawnActor<ASnakeElement>(SnakeElementClass, GetActorTransform());
+	
 }
 
 // Called every frame
-void ASnake::Tick(float DeltaTime)
+void ASnakeElement::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
