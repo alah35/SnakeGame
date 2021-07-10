@@ -2,6 +2,7 @@
 
 
 #include "Snake.h"
+#include "SnakeElementBase.h"
 
 // Sets default values
 ASnake::ASnake()
@@ -15,7 +16,7 @@ ASnake::ASnake()
 void ASnake::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, GetActorTransform());
 }
 
 // Called every frame
