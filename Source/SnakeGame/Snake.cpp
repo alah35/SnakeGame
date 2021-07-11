@@ -10,6 +10,8 @@ ASnake::ASnake()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	ElementSize = 100.f;
+	MovementSpeed = 10.f;
+	LastMoveDirection = EMovementDirection::DOWN;
 }
 
 // Called when the game starts or when spawned
@@ -24,7 +26,7 @@ void ASnake::BeginPlay()
 void ASnake::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	Move(DeltaTime);
 }
 
 void ASnake::AddSnakeElement(int ElementsNum)
@@ -33,9 +35,37 @@ void ASnake::AddSnakeElement(int ElementsNum)
 	{
 		FVector NewLocation(SnakeElements.Num()*ElementSize,0,0);
         FTransform NewTransform(NewLocation); 
-        auto NewSnakeElem = GetWorld()->SpawnActor<ASnakeElement>(SnakeElementClass, NewTransform);
-        SnakeElements.Add(NewSnakeElem);
+        ASnakeElement* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElement>(SnakeElementClass, NewTransform);
+		NewSnakeElem->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		SnakeElements.Add(NewSnakeElem);
 	}
 	
+}
+
+void ASnake::Move(float DeltaTime)
+{
+	FVector MovementVector(0,0,0);
+	float MovementSpeedDelta = MovementSpeed * DeltaTime;
+
+	switch (LastMoveDirection)
+	{
+		case EMovementDirection::UP:
+			MovementVector.X +=MovementSpeedDelta;
+		    break;
+		
+		case EMovementDirection::DOWN:
+			MovementVector.X -=MovementSpeedDelta;
+		    break;
+
+		case EMovementDirection::LEFT:
+			MovementVector.Y += MovementSpeedDelta;
+		    break;
+
+		case EMovementDirection::RIGHT:
+			MovementVector.Y -= MovementSpeedDelta;
+			break;
+	}
+
+	AddActorWorldOffset(MovementVector);
 }
 
