@@ -16,8 +16,16 @@ class SNAKEGAME_API ASnake : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASnake();
+	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeElement> SnakeElementClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ElementSize;
+	
+	UPROPERTY()
+	TArray<ASnakeElement*> SnakeElements;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -26,4 +34,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void AddSnakeElement(int ElementsNum = 1);
 };
+
